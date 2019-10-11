@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import jwt from 'jsonwebtoken';
 
 import authConfig from '../../config/auth';
