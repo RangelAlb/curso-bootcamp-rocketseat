@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
+import PropTypes, { string } from 'prop-types';
 import api from '../../services/api';
 // import { Container } from './styles';
 
 export default class Repository extends Component {
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        repository: PropTypes.string,
+      }),
+    }).isRequired,
+  };
+
   // Armazenar dados dos componentes
-  // state = {
-  //   repository = {},
-  //   issues: [],
-  //   loading: true,
-  // }
+  state = {
+    repository: {},
+    issues: [],
+    loading: true,
+  };
   //-----------------------------------
 
   async componentDidMount() {
@@ -26,15 +35,15 @@ export default class Repository extends Component {
       }),
     ]);
 
-    //  this.setState({
-    //    repository: repository.data,
-    //    issues: issues.data,
-    //    loading: false,
-    //  })
+    this.setState({
+      repository: repository.data,
+      issues: issues.data,
+      loading: false,
+    });
   }
 
   render() {
-    //const { repository, issues, loading } = this.state;
+    const { repository, issues, loading } = this.state;
 
     return <h1>Repository</h1>;
   }
