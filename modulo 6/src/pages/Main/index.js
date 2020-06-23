@@ -1,6 +1,8 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/jsx-no-undef */
 import React, { Component } from 'react';
 import { Keyboard, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   Container,
   Form,
@@ -24,6 +26,22 @@ export default class Main extends Component {
     users: [],
     loading: false,
   };
+
+  async componentDidMount() {
+    const users = await AsyncStorage.getItem('users');
+
+    if (users) {
+      this.setState({ users: JSON.parse(users) });
+    }
+  }
+
+  async componentDidUpdate() {
+    const { users } = this.state;
+
+    if (prevState.users !== users) {
+      await AsyncStorage.setItem('users', JSON.stringify(users));
+    }
+  }
 
   handleaddUser = async () => {
     const { users, newUser } = this.state;
@@ -51,7 +69,7 @@ export default class Main extends Component {
   render() {
     const { users, newUser, loading } = this.state;
 
-    return (
+    const newLocal = (
       <Container>
         <Form>
           <Input
@@ -88,6 +106,7 @@ export default class Main extends Component {
         />
       </Container>
     );
+    return newLocal;
   }
 }
 Main.navigationOptions = {
