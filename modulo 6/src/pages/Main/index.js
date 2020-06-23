@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { Component } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, ActivityIndicator } from 'react-native';
 import {
   Container,
   Form,
@@ -22,10 +22,13 @@ export default class Main extends Component {
   state = {
     newUser: '',
     users: [],
+    loading: false,
   };
 
   handleaddUser = async () => {
     const { users, newUser } = this.state;
+
+    this.setState({ loading: true });
 
     const response = await api.get(`/users/${newUser}`);
 
@@ -39,13 +42,14 @@ export default class Main extends Component {
     this.setState({
       users: [...users, data],
       newUser: '',
+      loading: false,
     });
 
     Keyboard.dismiss();
   };
 
   render() {
-    const { users, newUser } = this.state;
+    const { users, newUser, loading } = this.state;
 
     return (
       <Container>
@@ -60,7 +64,11 @@ export default class Main extends Component {
             onSubmitEditing={this.handleaddUser}
           />
           <SubmitButton onPress={this.handleaddUser}>
-            <Icon name="Add" size={20} color="#FFF" />
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Icon name="Add" size={20} color="#FFF" />
+            )}
           </SubmitButton>
         </Form>
         <List
