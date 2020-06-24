@@ -1,6 +1,9 @@
+/* eslint-disable react/state-in-constructor */
+/* eslint-disable react/static-property-placement */
 /* eslint-disable no-undef */
 /* eslint-disable react/jsx-no-undef */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Keyboard, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
@@ -21,6 +24,16 @@ import api from '../../services/api';
 
 export default class Main extends Component {
   // eslint-disable-next-line react/state-in-constructor
+  static navigationOptions = {
+    title: 'Usuários',
+  };
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  };
+
   state = {
     newUser: '',
     users: [],
@@ -55,6 +68,12 @@ export default class Main extends Component {
       login: response.data.login,
       bio: response.data.bio,
       avatar: response.data.avatar_url,
+    };
+
+    handleNavigate = (user) => {
+      const { navigation } = this.props;
+
+      navigation.navigate('User', { user });
     };
 
     this.setState({
@@ -98,7 +117,7 @@ export default class Main extends Component {
               <Name>{item.name}</Name>
               <Bio>{item.bio}</Bio>
 
-              <ProfileButton onPress={() => {}}>
+              <ProfileButton onPress={() => this.handleNavigate(item)}>
                 <ProfileButtonText>Ver perfil</ProfileButtonText>
               </ProfileButton>
             </User>
@@ -109,6 +128,3 @@ export default class Main extends Component {
     return newLocal;
   }
 }
-Main.navigationOptions = {
-  title: 'Usuários',
-};
