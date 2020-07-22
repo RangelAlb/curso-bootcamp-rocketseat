@@ -6,8 +6,7 @@ import { Container, Cart } from './styles';
 
 import logo from '../../assets/images/logo.png';
 
-function Header({ cart }) {
-  console.log(cart);
+function Header({ cartSize }) {
   return (
     <Container>
       <Link to="/">
@@ -17,7 +16,7 @@ function Header({ cart }) {
       <Cart to="/cart">
         <div>
           <strong>Meu carrinho</strong>
-          <span>{cart} itens</span>
+          <span>{cartSize} itens</span>
         </div>
         <MdShoppingBasket size={36} color="#FFF" />
       </Cart>
@@ -25,5 +24,5 @@ function Header({ cart }) {
   );
 }
 export default connect((state) => ({
-  cartSize: state.cart,
+  cartSize: state.cart.length,
 }))(Header);
